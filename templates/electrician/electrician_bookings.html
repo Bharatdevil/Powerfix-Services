@@ -1,0 +1,66 @@
+{% extends "electrician/electrician_base.html" %}
+{% block content %}
+
+<h4 class="mb-4 font-weight-bold">
+    My Jobs
+    <span class="badge badge-info ml-2">
+        {{ selected_status }}
+    </span>
+</h4>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover text-center">
+        <thead class="bg-dark text-warning">
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for b in bookings %}
+            <tr>
+                <td>{{ b.id }}</td>
+
+                <td>
+                    {{ b.customer.c_fullname }} <br>
+                    <small>{{ b.customer.c_contact }}</small>
+                </td>
+
+                <td>{{ b.service.s_name }}</td>
+
+                <td>{{ b.customer.c_address }}</td>
+
+                <td>
+                    <span class="badge badge-info">
+                        {{ b.status }}
+                    </span>
+                </td>
+
+                <td>
+                    {% if b.status == "Assigned" %}
+                    <a href="{% url 'electrician_complete_job' b.id %}" class="btn btn-sm btn-success">
+                        Mark as Completed
+                    </a>
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-muted text-center">
+                    No jobs found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

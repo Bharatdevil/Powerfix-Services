@@ -1,0 +1,28 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+
+<h4 class="text-warning mb-4">Update Service</h4>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label>Service Name</label>
+        <input type="text" name="s_name" value="{{ service.s_name }}" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <textarea name="s_description" class="form-control" required>{{ service.s_description }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        <input type="number" name="s_price" value="{{ service.s_price }}" class="form-control" required>
+    </div>
+
+    <button class="btn btn-warning">Update</button>
+    <a href="{% url 'admin_services' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

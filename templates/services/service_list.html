@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="loginAlert" class="alert alert-danger text-center"
+  style="display:none; position:fixed; top:20px; left:50%;transform:translateX(-50%);z-index:1055;min-width:300px; ">
+  Please login to book a service.
+</div>
+<div class="container mt-5">
+  <div class="row">
+
+    {% for service in services %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body text-center">
+
+          <h5 class="card-title font-weight-bold">
+            {{ service.s_name }}
+          </h5>
+
+          <p class="card-text">
+            {{ service.s_description }}
+          </p>
+
+          <p class="font-weight-bold">
+            Base Price: ₹{{ service.s_price }}
+          </p>
+
+          <!-- Hidden Details (UNIQUE ID) -->
+          <div id="details-{{ service.id }}" class="mt-3" style="display:none;">
+            <!-- <p>
+              <strong>Electrician:</strong>
+              {{ service.e_id.e_fullname }}
+            </p> -->
+
+            <!-- Booking (future use) -->
+            {% if is_customer_logged_in %}
+            <form method="post" action="{% url 'book_service' service.id %}" onsubmit="return confirmBooking();">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-warning font-weight-bold">
+                Book Service
+              </button>
+            </form>
+            {% else %}
+            <button class="btn btn-warning font-weight-bold" onclick="showLoginAlert()">
+              Book Service
+            </button>
+            {% endif %}
+
+          </div>
+
+          <!-- Toggle Button -->
+          <button class="btn btn-dark mt-2" onclick="toggleDetails('{{ service.id }}')">
+            View Details
+          </button>
+
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-center w-100">No services available.</p>
+    {% endfor %}
+
+  </div>
+</div>
+
+<!-- Scripts -->
+<script>
+  function confirmBooking() {
+    return confirm("Are you sure you want to book this service?");
+  }
+
+  function toggleDetails(serviceId) {
+    var details = document.getElementById("details-" + serviceId);
+
+    // Optional: close other open cards
+    document.querySelectorAll("[id^='details-']").forEach(function (el) {
+      if (el !== details) {
+        el.style.display = "none";
+      }
+    });
+
+    // Toggle current
+    details.style.display =
+      details.style.display === "block" ? "none" : "block";
+  }
+
+  // alert for login
+  function showLoginAlert() {
+    var alertBox = document.getElementById("loginAlert");
+    alertBox.style.display = "block";
+
+    setTimeout(function () {
+      alertBox.style.display = "none";
+    }, 5000);
+  }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "electrician/electrician_base.html" %}
+{% block content %}
+
+<h4 class="mb-3 font-weight-bold">Mark Job as Completed</h4>
+
+<!-- JOB SUMMARY -->
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Service:</strong> {{ booking.service.s_name }}</p>
+        <p><strong>Customer:</strong> {{ booking.customer.c_fullname }}</p>
+        <p><strong>Address:</strong> {{ booking.customer.c_address }}</p>
+        <p><strong>Base Price:</strong> ₹{{ booking.base_price }}</p>
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <!-- MATERIALS -->
+    <h5>Add Materials Used</h5>
+
+    <table class="table table-bordered" id="itemsTable">
+        <thead class="bg-light">
+            <tr>
+                <th>Item Name</th>
+                <th width="120">Qty</th>
+                <th width="150">Unit Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="text" name="item_name" class="form-control" placeholder="Wire / Bulb">
+                </td>
+                <td>
+                    <input type="number" name="quantity" class="form-control" min="1">
+                </td>
+                <td>
+                    <input type="number" name="unit_price" class="form-control" min="1">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-secondary btn-sm mb-3" onclick="addRow()">
+        + Add More Items
+    </button>
+
+    <br>
+
+    <button type="submit" class="btn btn-success font-weight-bold">
+        Mark as Completed
+    </button>
+
+    <a href="{% url 'electrician_bookings' %}" class="btn btn-secondary ml-2">
+        Cancel
+    </a>
+</form>
+
+<script>
+    function addRow() {
+        const row = `
+        <tr>
+            <td><input type="text" name="item_name" class="form-control"></td>
+            <td><input type="number" name="quantity" class="form-control" min="1"></td>
+            <td><input type="number" name="unit_price" class="form-control" min="1"></td>
+        </tr>`;
+        document.querySelector("#itemsTable tbody").insertAdjacentHTML("beforeend", row);
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mt-4 mb-3 text-center">My Bookings</h3>
+
+<table class="table table-bordered text-center">
+    <thead class="bg-dark text-warning">
+        <tr>
+            <th>ID</th>
+            <th>Service</th>
+            <th>Base Price</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Invoice</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.service.s_name }}</td>
+            <td>₹{{ b.base_price }}</td>
+            <td>
+                <span class="badge badge-info">
+                    {{ b.status }}
+                </span>
+            </td>
+            <td>{{ b.booking_date }}</td>
+            <td>{% if b.status == "Completed" or b.status == "Paid" %}
+                <a href="{% url 'customer_invoice' b.id %}" class="btn btn-sm btn-info">
+                    View Invoice
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No bookings found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

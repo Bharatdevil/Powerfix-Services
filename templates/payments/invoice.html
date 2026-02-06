@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4 class="mb-4 font-weight-bold">Invoice</h4>
+
+<!-- CUSTOMER & JOB DETAILS -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <div>
+                <p><strong>Service:</strong> {{ booking.service.s_name }}</p>
+                <p><strong>Booking Date:</strong> {{ booking.booking_date|date:"M d, Y" }}</p>
+                <p>
+                    <strong>Status:</strong>
+                    <span class="badge badge-success">{{ booking.status }}</span>
+                </p>
+            </div>
+
+            <div class="text-right">
+                <p>
+                    <strong>Invoice Date:</strong><br>
+                    {{ today|date:"M d, Y" }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ITEMIZED BILL -->
+<table class="table table-bordered">
+    <thead class="bg-dark text-warning">
+        <tr>
+            <th>Item</th>
+            <th width="120">Qty</th>
+            <th width="150">Unit Price</th>
+            <th width="150">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.unit_price }}</td>
+            <td>₹{{ item.total_price }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">
+                No extra materials used
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- TOTAL SUMMARY -->
+<div class="card mt-3">
+    <div class="card-body d-flex justify-content-between align-items-center">
+
+        <!-- LEFT: PAYMENT STATUS -->
+        {% if booking.status == "Paid" %}
+        <span class="badge badge-success px-3 py-2">
+            ✔ Payment Completed
+        </span>
+        {% else %}
+        <span class="badge badge-warning px-3 py-2">
+            ⏳ Payment Pending
+        </span>
+        {% endif %}
+
+        <!-- RIGHT: AMOUNT DETAILS -->
+        <div class="text-right ">
+            <p class="mb-1">Base Price: ₹{{ booking.base_price }}</p>
+            <p class="mb-1">Extra Materials: ₹{{ extra_total }}</p>
+            <hr class="my-2">
+            <h5 class="mb-0 font-weight-bold">
+                Total Amount: ₹{{ booking.total_amount }}
+            </h5>
+        </div>
+
+    </div>
+</div>
+
+<!-- PAYMENT / STATUS ACTION -->
+{% if booking.status == "Completed" %}
+<div class="text-right mt-4">
+    <a href="{% url 'payments:start_payment' booking.id %}" class="btn btn-success font-weight-bold">
+        Pay Now
+    </a>
+</div>
+{% endif %}
+{% if booking.status == "Paid" %}
+<div class="text-center mt-3">
+    <a href="{% url 'payments:download_invoice_pdf' booking.id %}" class="btn btn-primary font-weight-bold"
+        target="_blank">
+        Download Invoice (PDF)
+    </a>
+</div>
+{% endif %}
+
+{% endblock %}

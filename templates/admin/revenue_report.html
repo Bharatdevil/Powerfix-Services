@@ -1,0 +1,145 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+
+<style>
+    .chart-container {
+        position: relative;
+        height: 300px;   /* controls chart height */
+        width: 100%;
+    }
+
+    .filter-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<!-- HEADER + FILTER -->
+<div class="filter-box">
+    <h4 class="font-weight-bold mb-0">Revenue Report</h4>
+
+    <!-- Period Filter -->
+    <form method="get">
+        <select name="period" class="form-control" onchange="this.form.submit()">
+            <option value="today" {% if selected_period == 'today' %}selected{% endif %}>Today</option>
+            <option value="yesterday" {% if selected_period == 'yesterday' %}selected{% endif %}>Yesterday</option>
+            <option value="7days" {% if selected_period == '7days' %}selected{% endif %}>Last 7 Days</option>
+            <option value="month" {% if selected_period == 'month' %}selected{% endif %}>This Month</option>
+        </select>
+    </form>
+</div>
+
+<div class="row">
+
+    <!-- DATE-WISE -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-center font-weight-bold">Date-wise Customer Revenue</h6>
+                <div class="chart-container">
+                    <canvas id="dateRevenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE-WISE -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-center font-weight-bold">Service-wise Revenue</h6>
+                <div class="chart-container">
+                    <canvas id="servicePieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DISTRIBUTION -->
+    <div class="col-md-12 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-center font-weight-bold">Revenue Distribution</h6>
+                <div class="chart-container">
+                    <canvas id="revenueDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* BAR CHART – DATE-WISE CUSTOMER PAYMENT */
+new Chart(document.getElementById('dateRevenueChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ dates|safe }},
+        datasets: [{
+            label: 'Customer Paid (₹)',
+            data: {{ revenues|safe }},
+            backgroundColor: '#007bff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,   // IMPORTANT
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+/* PIE CHART – PLATFORM vs ELECTRICIAN */
+new Chart(document.getElementById('revenueDistributionChart'), {
+    type: 'pie',
+    data: {
+        labels: ['Electrician Earnings', 'Platform Fee'],
+        datasets: [{
+            data: [{{ electrician_share }}, {{ platform_share }}],
+            backgroundColor: ['#28a745', '#dc3545']
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+new Chart(document.getElementById('servicePieChart'), {
+    type: 'pie',
+    data: {
+        labels: {{ services|safe }},
+        datasets: [{
+            data: {{ service_amounts|safe }},
+            backgroundColor: [
+                '#007bff',
+                '#28a745',
+                '#ffc107',
+                '#dc3545',
+                '#17a2b8',
+                '#6f42c1'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

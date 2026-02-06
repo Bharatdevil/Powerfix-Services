@@ -1,0 +1,59 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+
+<h4 class="mb-4 font-weight-bold">Dashboard</h4>
+
+<div class="row">
+
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'admin_bookings' %}?status=Pending" class="text-decoration-none">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <h6>New Bookings</h6>
+                    <h2>{{ pending_count }}</h2>
+                    <small>Pending requests</small>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'admin_bookings' %}?status=Assigned" class="text-decoration-none">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <h6>Assigned Jobs</h6>
+                    <h2>{{ assigned_count }}</h2>
+                    <small>Electrician assigned</small>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'admin_bookings' %}?status=Completed" class="text-decoration-none">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h6>Completed Jobs</h6>
+                    <h2>{{ completed_count }}</h2>
+                    <small>Work finished</small>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'admin_bookings' %}?status=Paid" class="text-decoration-none">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h6>Earnings</h6>
+                    <h2>{{ paid_count }}</h2>
+                    <small>Payments received</small>
+                </div>
+            </div>
+        </a>
+    </div>
+
+</div>
+
+
+{% endblock %}

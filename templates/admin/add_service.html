@@ -1,0 +1,45 @@
+{% extends "admin/admin_base.html" %} {% block content %}
+
+<div class="container">
+  <h3 class="text-warning mb-4">Add Service</h3>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label>Service Name</label>
+      <input type="text" name="s_name" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        name="s_description"
+        class="form-control"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Base Price (₹)</label>
+      <input type="number" name="s_price" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+      <label>Assign Electrician</label>
+      <select name="electrician" class="form-control" required>
+        <option value="">Select Electrician</option>
+        {% for e in electricians %}
+        <option value="{{ e.id }}">{{ e.e_fullname }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-warning font-weight-bold">
+      Add Service
+    </button>
+  </form>
+</div>
+
+{% endblock %}

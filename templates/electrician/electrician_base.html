@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Electrician | Powerfix</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .sidebar a {
+            color: #ffc107;
+            padding: 12px 18px;
+            display: block;
+            border-radius: 4px;
+            margin: 6px 10px;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: #ffc107;
+            color: #212529;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP NAVBAR -->
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand text-warning font-weight-bold" href="{% url 'electrician_dashboard' %}">
+            ⚡ Electrician Panel
+        </a>
+
+        <ul class="navbar-nav ml-auto flex-row align-items-center">
+            <li class="nav-item mr-3">
+                <a class="nav-link text-warning font-weight-bold" href="{% url 'electrician_profile' %}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-warning font-weight-bold" href="{% url 'electrician_logout' %}">
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- SIDEBAR -->
+            <div class="col-md-2 bg-dark min-vh-100 pt-4">
+                <ul class="nav flex-column sidebar">
+                    <li class="nav-item">
+                        <a href="{% url 'electrician_dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'electrician_bookings' %}">My Jobs</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a href="{#% url 'electrician_completed_jobs' %}">Completed Jobs</a>
+                    </li> -->
+                </ul>
+            </div>
+
+            <!-- MAIN CONTENT -->
+            <div class="col-md-10 p-4">
+                {% block content %}{% endblock %}
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

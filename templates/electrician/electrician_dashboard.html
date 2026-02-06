@@ -1,0 +1,50 @@
+{% extends "electrician/electrician_base.html" %}
+{% block content %}
+
+<h4 class="mb-4 font-weight-bold">Dashboard</h4>
+
+<div class="row">
+
+    <!-- Assigned Jobs -->
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'electrician_bookings' %}?status=Assigned" class="text-decoration-none">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <h6>Assigned Jobs</h6>
+                    <h2>{{ assigned_count }}</h2>
+                    <small>Jobs assigned to you</small>
+                </div>
+            </div>
+        </a>
+    </div>
+
+
+    <!-- Completed Jobs -->
+    <!-- <div class="col-md-3 mb-3">
+        <a href="{% url 'electrician_bookings' %}?status=Completed" class="text-decoration-none">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h6>Completed Jobs</h6>
+                    <h2>{{ completed_count }}</h2>
+                    <small>Work finished</small>
+                </div>
+            </div>
+        </a>
+    </div> -->
+
+    <!-- Earnings -->
+    <div class="col-md-3 mb-3">
+        <a href="{% url 'electrician_earnings' %}" class="text-decoration-none">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h6>Earnings</h6>
+                    <h2>₹ {{ total_earnings|default:0 }}</h2>
+                    <small>Payments received</small>
+                </div>
+            </div>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

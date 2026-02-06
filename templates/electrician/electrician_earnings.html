@@ -1,0 +1,65 @@
+{% extends "electrician/electrician_base.html" %}
+{% block content %}
+
+<h4 class="mb-4 font-weight-bold">My Earnings</h4>
+
+<!-- SUMMARY CARDS -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6>Total Earnings</h6>
+                <h3>₹ {{ total_earnings }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h6>Completed Jobs</h6>
+                <h3>{{ jobs_count }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EARNINGS TABLE -->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover text-center">
+        <thead class="bg-dark text-warning">
+            <tr>
+                <th>Booking ID</th>
+                <th>Customer Name</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Customer Paid</th>
+                <th>Amount Earned</th>
+                <th>Payment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in paid_jobs %}
+            <tr>
+                <td>{{ job.id }}</td>
+                <td>{{ job.customer.c_fullname }}</td>
+                <td>{{ job.service.s_name }}</td>
+                <td>{{ job.booking_date }}</td>
+                <td>₹ {{ job.total_amount }}</td>
+                <td class="font-weight-bold text-success">
+                    ₹ {{ job.electrician_earning }}
+                </td>
+                <td>
+                    <span class="badge badge-success">Paid</span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-muted">No earnings found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

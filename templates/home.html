@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block hero %}
+<div class="container mt-5">
+    <div class="jumbotron text-center bg-dark text-white">
+        <h1 class="display-5 text-warning">Welcome to Powerfix Services</h1>
+        <p class="lead text-warning font-weight-bold">
+            Your trusted electrician & home service partner
+        </p>
+
+        <a href="{% url 'view_service' %}" class="btn btn-warning text-dark font-weight-bold">
+            Explore Services
+        </a>
+    </div>
+</div>
+
+{% if open_login_modal %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var loginModal = new bootstrap.Modal(
+            document.getElementById('loginModal')
+        );
+        loginModal.show();
+    });
+</script>
+{% endif %}
+{% endblock %}

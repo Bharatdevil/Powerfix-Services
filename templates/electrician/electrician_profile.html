@@ -1,0 +1,40 @@
+{% extends "electrician/electrician_base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h4 class="text-warning font-weight-bold">My Profile</h4>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input name="name" class="form-control" value="{{ electrician.e_fullname }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Qualification</label>
+                    <input name="qualification" class="form-control" value="{{ electrician.e_qualification }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Contact</label>
+                    <input name="contact" class="form-control" value="{{ electrician.e_contact }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Address</label>
+                    <input name="address" class="form-control" value="{{ electrician.e_address }}">
+                </div>
+
+                <button type="submit" class="btn btn-warning font-weight-bold">
+                    Update
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
